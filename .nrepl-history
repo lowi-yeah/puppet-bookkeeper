@@ -1,0 +1,48 @@
++
+f00
+'inc
+(resolve 'inc)
+(eval 'inc)
+(source +)
+(source type)
+(source defn)
+(source def)
+(source let)
+(take 3 (repeatedly rand))
+(source pos?)
+(frequencies [:meow :mrrrow :meow :meow])
+(pprint (group-by :first [{:first "Li"    :last "Zhou"}
+                                 {:first "Sarah" :last "Lee"}
+                                 {:first "Sarah" :last "Dunn"}
+                                 {:first "Li"    :last "O'Toole"}]))
+; find the sum of the products of consecutive pairs of the first 1000 odd integers.
+(defn palindrome? [string] 
+  (= string (reverse string)))
+(print (str "palindrome? " "abba" (palindrome? "abba")))
+(print (str "palindrome? " "abbb" (palindrome? "abbb")))
+; find the sum of the products of consecutive pairs of the first 1000 odd integers.
+(defn palindrome? [string] 
+  (= string (reverse string)))
+(print (str "palindrome? " "abba: " (palindrome? "abba")))
+(print (str "palindrome? " "abbb: " (palindrome? "abbb")))
+(print (str "palindrome? " "abbb: " (palindrome? "abbb"))); find the sum of the products of consecutive pairs of the first 1000 odd integers.
+(defn palindrome? [string] 
+  (= string (str (reverse string))))
+(print (str "palindrome? " "abba: " (palindrome? "abba")))
+(print (str "palindrome? " "abbb: " (palindrome? "abbb")))
+(reverse string)
+(def string "abba")
+(reverse string)
+(str (reverse string))
+(conj (reverse string))
+(str (conj (reverse string)))
+(def string "abbb")
+(str (conj (reverse string)))
+(defn integers
+  [x]
+  (lazy-seq
+    (cons x (integers (inc x)))))
+(take 10 xs)
+(def xs (integers 0))
+(take 10 xs)
+exit
