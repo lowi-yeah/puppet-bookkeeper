@@ -36,7 +36,7 @@ class bookkeeper::service(
         path        => ['/usr/bin', '/usr/sbin', '/sbin', '/bin'],
         user        => 'root',
         refreshonly => true,
-        subscribe   => File[$config],
+        subscribe   => File[$config_file],
         onlyif      => 'which supervisorctl &>/dev/null',
         require     => Class['::supervisor'],
       }

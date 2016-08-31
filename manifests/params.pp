@@ -2,18 +2,19 @@
 # == Class bookkeeper::params
 class bookkeeper::params {
   # basics
-  $command             = 'etc/bookkeeper/bin/bookkeeper bookie'
+  $command             = '/etc/bookkeeper/bin/bookkeeper bookkeeper'
   $config_template     = 'bookkeeper/bk_server.conf.erb'
-  $config              = '/etc/bookkeeper/conf/bk_server.conf'
+  $config_file         = '/etc/bookkeeper/conf/bk_server.conf'
   $gz_remote           = 'http://mirror.klaus-uwe.me/apache/zookeeper/bookkeeper/bookkeeper-4.3.0/bookkeeper-server-4.3.0-bin.tar.gz'
-  $gz_local            = '/tmp/bookkeeper-server-4.3.0-bin.tar.gz'
+  $gz_local            = 'bookkeeper-server-4.3.0-bin.tar.gz'
   $unzipped_local      = '/tmp/bookkeeper-server-4.3.0'
-  $bin_directory       = '/etc/bookkeeper'
+  $bin_directory       = '/etc/bookkeeper/bin'
+  $tmp_directory       = '/tmp'
   # service configuration
   $service_autorestart = true
   $service_enable      = true
   $service_ensure      = 'present'
-  $service_manage      = true
+  $service_manage      = false
   $service_name        = 'bookkeeper'
   $service_retries     = 999
   $service_startsecs   = 10
@@ -34,11 +35,10 @@ class bookkeeper::params {
   $user_manage         = true
   $user_managehome     = true
   # bookkeeper configuration
-  $bookie_port          = 3181
+  $bookkeeper_port      = 3181
   $allow_loopback       = true
   $journal_directory    = '/etc/bookkeeper/data/journal'
   $ledger_directory     = '/etc/bookkeeper/data/ledger'
-  $index_directory      = '/etc/bookkeeper/data/ledger'
   $zk_ledgers_root_path = '/ledgers'
   $zk_servers           = 'zookeeper1:2181'
   $zk_timeout           = 10000

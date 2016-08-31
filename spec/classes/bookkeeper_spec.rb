@@ -21,36 +21,63 @@ describe 'bookkeeper' do
             # fail when you run the tests on e.g. Mac OS X.
             it { should compile.with_all_deps }
 
-            #it { should contain_class('bookkeeper::params') }
-            #it { should contain_class('bookkeeper') }
-            #it { should contain_class('bookkeeper::users').that_comes_before('bookkeeper::install') }
-            #it { should contain_class('bookkeeper::install').that_comes_before('bookkeeper::config') }
-            #it { should contain_class('bookkeeper::config') }
-            #it { should contain_class('bookkeeper::service').that_subscribes_to('bookkeeper::config') }
-#
-            ## it { should contain_package('bookkeeper').with_ensure('present') }
-#
-            #it { should contain_group('bookkeeper').with({
-            #  'ensure'     => 'present',
-            #  'gid'        => 53013,
-            #})}
-#
-            #it { should contain_user('bookkeeper').with({
-            #  'ensure'     => 'present',
-            #  'home'       => '/home/bookkeeper',
-            #  'shell'      => '/bin/bash',
-            #  'uid'        => 53013,
-            #  'comment'    => 'Bookkeeper system account',
-            #  'gid'        => 'bookkeeper',
-            #  'managehome' => true
-            #})}
+            it { should contain_class('bookkeeper::params') }
+            it { should contain_class('bookkeeper') }
+            it { should contain_class('bookkeeper::users')}
+            it { should contain_class('bookkeeper::install')}
+            it { should contain_class('bookkeeper::config') }
+            it { should contain_class('bookkeeper::service')}
 
-            #it { should contain_file('/opt/mosquitto/logs').with({
+            # these dont work, ses: "No title provided and "bookkeeper::install" is not a valid resource reference"
+            # it { should contain_class('bookkeeper::users').that_comes_before('bookkeeper::install') }
+            # it { should contain_class('bookkeeper::install').that_comes_before('bookkeeper::config') }
+            # it { should contain_class('bookkeeper::config') }
+            # it { should contain_class('bookkeeper::service').that_subscribes_to('bookkeeper::config') }
+
+            it { should contain_group('bookkeeper').with({
+             'ensure'     => 'present',
+             'gid'        => 53013,
+            })}
+
+            it { should contain_user('bookkeeper').with({
+             'ensure'     => 'present',
+             'home'       => '/home/bookkeeper',
+             'shell'      => '/bin/bash',
+             'uid'        => 53013,
+             'comment'    => 'Bookkeeper system account',
+             'gid'        => 'bookkeeper',
+             'managehome' => true
+            })}
+
+            it { should contain_file("/etc/bookkeeper/conf/bk_server.conf").with({
+                'ensure' => 'file',
+                'owner'  => 'root',
+                'group'  => 'root',
+                'mode'   => '0644',
+              }).
+              with_content(/\sbookiePort=3181\s/)
+            }
+
+            it { should contain_file("/tmp/bookkeeper-server-4.3.0-bin.tar.gz").with({
+                'ensure' => 'file',
+                'owner'  => 'root',
+                'group'  => 'root'
+              })
+            }
+
+            # it { should contain_file("/etc/bookkeeper/bin").with({
+            #     'ensure' => 'directory',
+            #     'owner'  => 'root',
+            #     'group'  => 'root'
+            #   })
+            # }
+
+            # it { should contain_file('/opt/mosquitto/logs').with({
             #  'ensure' => 'directory',
             #  'owner'  => 'mosquitto',
             #  'group'  => 'mosquitto',
             #  'mode'   => '0755',
-            #})}
+            # })}
 
 #            it { should contain_file('/var/log/mosquitto').with({
 #              'ensure' => 'directory',
@@ -59,14 +86,7 @@ describe 'bookkeeper' do
 #              'mode'   => '0755',
 #            })}
 
-            # it { should contain_file(default_broker_configuration_file).with({
-            #     'ensure' => 'file',
-            #     'owner'  => 'root',
-            #     'group'  => 'root',
-            #     'mode'   => '0644',
-            #   }).
-            #   with_content(/\sport\s1883\s/)
-            # }
+            
 
 
             # it { should contain_supervisor__service('bookkeeper').with({

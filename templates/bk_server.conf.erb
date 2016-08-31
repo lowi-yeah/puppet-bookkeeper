@@ -29,7 +29,7 @@
 ## Booookie settings
 
 # Port that bookie server listen on
-bookiePort=<%= @bookie_port %>
+bookiePort=<%= @bookkeeper_port %>
 
 # Set the network interface that the bookie should listen on.
 # If not set, the bookie will listen on all interfaces.
@@ -62,7 +62,7 @@ journalDirectory=<%= @journal_directory %>
 ledgerDirectories=<%= @ledger_directories %>
 
 # Directories to store index files. If not specified, will use ledgerDirectories to store.
-indexDirectories=<%= @index_directories %>
+#indexDirectories=/tmp/bk1-data
 
 # Ledger Manager Class
 # What kind of ledger manager is used to manage how ledgers are stored, managed
@@ -72,7 +72,7 @@ indexDirectories=<%= @index_directories %>
 # Root zookeeper path to store ledger metadata
 # This parameter is used by zookeeper-based ledger manager as a root znode to
 # store all ledgers.
-zkLedgersRootPath=<%= zk_ledgers_root_path %>
+zkLedgersRootPath=<%= @zk_ledgers_root_path %>
 
 # Enable/Disable entry logger preallocation
 # entryLogFilePreallocationEnabled=true

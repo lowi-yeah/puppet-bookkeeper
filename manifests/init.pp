@@ -1,13 +1,14 @@
 # Install and configure an Apache Bookkeper Server
-# Automatically starts one bookie. For a complete quorum, three instances need to be started
+# Automatically starts one bookkeeper. For a complete quorum, three instances need to be started
 class bookkeeper (
   $command                               = $bookkeeper::params::command,
   $config_template                       = $bookkeeper::params::config_template,
-  $config                                = $bookkeeper::params::config,
+  $config_file                           = $bookkeeper::params::config_file,
   $gz_remote                             = $bookkeeper::params::gz_remote,
   $gz_local                              = $bookkeeper::params::gz_local,
   $unzipped_local                        = $bookkeeper::params::unzipped_local,
   $bin_directory                         = $bookkeeper::params::bin_directory,
+  $tmp_directory                         = $bookkeeper::params::tmp_directory,
 
   $service_autorestart                   = hiera('bookkeeper::service_autorestart', $bookkeeper::params::service_autorestart),
   $service_enable                        = hiera('bookkeeper::service_enable', $bookkeeper::params::service_enable),
@@ -33,23 +34,24 @@ class bookkeeper (
   $user_manage                           = hiera('bookkeeper::user_manage', $bookkeeper::params::user_manage),
   $user_managehome                       = hiera('bookkeeper::user_managehome', $bookkeeper::params::user_managehome),
 
-  $bookie_port                           = $bookkeeper::params::bookie_port,
+  $bookkeeper_port                       = $bookkeeper::params::bookkeeper_port,
   $allow_loopback                        = $bookkeeper::params::allow_loopback,
   $journal_directory                     = $bookkeeper::params::journal_directory,
   $ledger_directory                      = $bookkeeper::params::ledger_directory,
-  $index_directory                       = $bookkeeper::params::index_directory,
   $zk_ledgers_root_path                  = $bookkeeper::params::zk_ledgers_root_path,
   $zk_servers                            = $bookkeeper::params::zk_servers,
   $zk_timeout                            = $bookkeeper::params::zk_timeout,
   $server_tcp_no_delay                   = $bookkeeper::params::server_tcp_no_delay
+
 ) inherits bookkeeper::params {
   validate_string($command)
   validate_string($config_template)
-  validate_absolute_path($config)
+  validate_absolute_path($config_file)
   validate_string($gz_remote)
-  validate_absolute_path($gz_local)
+  validate_string($gz_local)
   validate_absolute_path($unzipped_local)
   validate_absolute_path($bin_directory)
+  validate_absolute_path($tmp_directory)
 
   validate_bool($service_autorestart)
   validate_bool($service_enable)
@@ -75,11 +77,10 @@ class bookkeeper (
   validate_bool($user_manage)
   validate_bool($user_managehome)
 
-  if !is_integer($bookie_port) { fail('The $bookie_port parameter must be an integer number') }
+  if !is_integer($bookkeeper_port) { fail('The $bookkeeper_port parameter must be an integer number') }
   validate_bool($allow_loopback)
   validate_absolute_path($journal_directory)
   validate_absolute_path($ledger_directory)
-  validate_absolute_path($index_directory)
   validate_absolute_path($zk_ledgers_root_path)
   validate_string($zk_servers)
   if !is_integer($zk_timeout) { fail('The $zk_timeout parameter must be an integer number') }

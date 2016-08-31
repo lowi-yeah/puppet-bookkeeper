@@ -1,9 +1,8 @@
 # == Class bookkeeper::install
 #
 class bookkeeper::install inherits bookkeeper {
-  file { 'binDirectory':
-    ensure => directory,
-    path   => $bin_directory
+  file { $bin_directory:
+    ensure => directory
   }
 
   file { 'journalDirectory':
@@ -16,25 +15,19 @@ class bookkeeper::install inherits bookkeeper {
     path   => $ledger_directory
   }
 
-  file { 'indexDirectory':
+  file { $tmp_directory:
     ensure => directory,
-    path   => $index_directory
   }
 
-  remote_file { 'packedJar':
-    ensure  => present,
-    path    => $gz_local,
-    source  => $gz_remote,
-    require => RemoteFile['binDirectory']
-  }
+  # remote_file { 'packedJar':
+  #   ensure => present,
+  #   path   => "${tmp_directory}/${gz_local}",
+  #   source => $gz_remote
+  # }
 
-  exec { 'untar':
-    command => "tar -xzf ${gz_local}",
-    require => RemoteFile['packedJar']
-  }
-
-  exec { 'move':
-    command => "mv ${unzipped_local} ${bin_path}",
-    require => Exec['untar']
+  exec { 'download':
+    command => "/bin/wget ${gz_remote}",
+    cwd     => $tmp_directory,
+    require => File[$tmp_directory]
   }
 }
